@@ -1,0 +1,14 @@
+# Load a previously saved solution as an initial condition (comment out if not required)
+# load -f save.dat
+
+# set time step size
+set dt DT
+
+# initialise for time stepping
+init
+
+# loop to iterate time integration and data output
+loop LOOPS         (number of animation frames)
+  step 1000      (product of steps and dt determines time between each frame)
+  tecp -s -f tec_animation_frame.plt -vars vel p vort psi -u 'sqrt(u^2+v^2)'
+endl

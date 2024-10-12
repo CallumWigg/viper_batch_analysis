@@ -1,0 +1,28 @@
+# Load a previously saved solution as an initial condition (comment out if not required)
+# load -f save.dat
+
+# set time step size
+set dt DT
+
+# initialise for time stepping
+init
+
+# loop to iterate time integration and data output
+loop LOOP_COUNT    (arbitrarily large outer loop - terminate job when you want)
+  stopcrit CRIT   (stop if maximum velocity change is below 1e-7) 
+  loop 100    (inner loop)
+    step STEP_COUNT        (perform 10 or 500 time steps, depending on verbose mode)
+    int -f 'int_KE.dat' -u '0.5*(u^2 + v^2)'   (write total kinetic energy to file)
+    flowrate flowrate.dat    (write flowrates through each boundary to file)
+
+    # Write flow rates through upper and lower outlet channels
+    line -f flow_outlet_upper.dat -u 'u' -N 100 -avg -p1 0.0 0.0 -p2 0.0 1.051462224
+    line -f flow_outlet_lower.dat -u 'u' -N 100 -avg -p1 0.0 0.0 -p2 0.0 -1.051462224
+
+    # Write pressures at upper and lower outlet channels
+    line -f pressure_outlet_upper.dat -u 'p' -N 100 -avg -p1 0.0 0.0 -p2 0.0 1.051462224
+    line -f pressure_outlet_lower.dat -u 'p' -N 100 -avg -p1 0.0 0.0 -p2 0.0 -1.051462224
+  endl
+  save -f save.dat  (save current state of simulation to binary Viper restart file)
+  tecp -f tec_out.plt -vars vel p vort psi -u 'sqrt(u^2+v^2)' (save Tecplot file for visualisation of solution)
+endl
