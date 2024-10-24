@@ -9,7 +9,7 @@ def run_data_analysis():
     subdirs = [d for d in os.listdir(current_dir) if os.path.isdir(os.path.join(current_dir, d))]
     
     # Path to analyse_static_data.py
-    analysis_script = os.path.join(current_dir, 'analyse_static_data.py')
+    analysis_script = os.path.join(current_dir, 'analyse_static_data_freq.py')
     
     # Check if analyse_static_data.py exists
     if not os.path.exists(analysis_script):
